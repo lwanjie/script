@@ -1,0 +1,45 @@
+import matplotlib.pyplot as plt
+plt.rcParams['font.family'] = 'Times New Roman'
+
+# 读取数据
+x = []
+y = []
+with open("PLANAR_AVERAGE.dat", mode='r') as f:
+    next(f)  # 跳过第一行
+    for line in f:
+        xy = line.rstrip().split()
+        x.append(float(xy[0]))
+        y.append(float(xy[1]))
+
+# 计算两个区间的均值
+mean_5_to_20 = sum(y[5:21]) / len(y[5:21])  # 计算第 5 到 20 个数据的均值
+mean_minus_20_to_minus_5 = sum(y[-20:-4]) / len(y[-20:-4])  # 计算倒数第 20 到 -5 个数据的均值
+
+# 计算两个均值的差值
+delta_V = mean_5_to_20 - mean_minus_20_to_minus_5
+
+# 创建图表
+plt.figure(figsize=(4, 6))  # 设置图像大小为 4x6 英寸
+plt.plot(x, y)
+plt.xlim(x[10], x[-10])  # 设置 x 轴范围
+plt.xticks([])  # 去除 x 轴刻度标签
+plt.xlabel("z-direction", labelpad=10, fontsize=18)  # 设置 x 轴标题
+plt.ylabel("Potential(eV)", labelpad=0, fontsize=18)  # 设置 y 轴标题
+
+# 添加水平参考线
+plt.axhline(y=mean_5_to_20, color='r', linestyle='--', label='第5-20个数据均值')
+plt.axhline(y=mean_minus_20_to_minus_5, color='b', linestyle='--', label='倒数第20到-5个数据均值')
+
+
+# 添加一个箭头，使其箭头顶部位于上虚线，箭尾位于下虚线
+plt.annotate(
+    '',
+    xy=(x[len(x)//2], mean_5_to_20),  # 箭头位置（箭头顶部）
+    xytext=(x[len(x)//2], mean_minus_20_to_minus_5),  # 箭尾位置
+    arrowprops=dict(arrowstyle='<->', color='green', lw=1.5),  # 箭头样式
+    ha='center', va='center', fontsize=12, color='green'  # 文本对齐
+)
+plt.tick_params(axis='y', direction='in')
+plt.text(x[len(x)//2] + 0.1, mean_5_to_20 + 0.2, f'$\Delta V = {delta_V:.2f}$ eV', ha='center', va='center',color='green')
+plt.savefig('work.pdf', dpi=400, bbox_inches='tight')  # 保存为 PDF
+plt.show()
