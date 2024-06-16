@@ -19,6 +19,12 @@ def write_poscar(lines, directory, filename='POSCAR'):
         f.writelines(lines)
 
 
+def write_optcell(directory, content):
+    filepath = os.path.join(directory, 'OPTCELL')
+    with open(filepath, 'w') as f:
+        f.write(content)
+        
+
 def apply_strain(lines, strain_a, strain_b):
     # Convert the strain values to float
     strain_a = float(strain_a)
@@ -55,11 +61,13 @@ if initial_poscar:
         strained_a_poscar = apply_strain(initial_poscar.copy(), strain, 0)
         a_directory = os.path.join(current_dir, 'mobility-x', f'{strain:+.3f}')
         write_poscar(strained_a_poscar, a_directory)
+        write_optcell(a_directory, '010')
 
         # 对b轴应用应变
         strained_b_poscar = apply_strain(initial_poscar.copy(), 0, strain)
         b_directory = os.path.join(current_dir, 'mobility-y', f'{strain:+.3f}')
         write_poscar(strained_b_poscar, b_directory)
+        write_optcell(b_directory, '100')
 
     print("Strained POSCAR files generated for a-axis and b-axis strains.")
 else:
