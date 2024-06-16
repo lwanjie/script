@@ -1,4 +1,4 @@
-# plot
+# script
 plot_band绘制2D monolaye材料的能带图
 六方晶系（G M K G）
 
