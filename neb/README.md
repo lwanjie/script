@@ -1,10 +1,4 @@
-# script
-plot_band      绘制2D monolaye材料的能带图六方晶系（G M K G）
-
-plot_potentail 绘制janus材料c方向的静电势
-
-strain         生成应变的POSCAR从-0.015，0.015，步长0.005
-
-band.py        通用的绘制2D monolaye材料的能带图六方晶系（G M K G）
-
-extract_z.sh   提取MD模拟的元素z方向位置
+ # script
+generate_displacements.py   xy 平面内过渡态搜索
+create_heatmap_data         数据提取脚本
+static.sh                   热图数据生成脚本
